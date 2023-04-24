@@ -19,6 +19,11 @@ public class PlayerMove : MonoBehaviour
 
     [SerializeField] private Transform _rayPos;
 
+    readonly int AttackHash = Animator.StringToHash("IsAttack");
+    readonly int Dead = Animator.StringToHash("Dead");
+    readonly int OnAir = Animator.StringToHash("OnAir");
+    readonly int Door_In = Animator.StringToHash("Door_In");
+    readonly int Door_Out = Animator.StringToHash("Door_Out");
 
     private void Awake()
     {
@@ -38,7 +43,7 @@ public class PlayerMove : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
-
+            _animator.SetBool(AttackHash, true);
         }
     }
 
@@ -49,11 +54,11 @@ public class PlayerMove : MonoBehaviour
         {
             transform.localScale = new Vector3(1, 1, 1);
         }
-
         if (h < 0)
         {
             transform.localScale = new Vector3(-1, 1, 1);
         }
+
         transform.position += new Vector3(h, 0) * Time.deltaTime * _speed;
     }
 
