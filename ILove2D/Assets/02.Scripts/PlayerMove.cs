@@ -13,7 +13,9 @@ public class PlayerMove : MonoBehaviour
 
     private bool _isJumping = false;
     private bool _canJump = false;
+
     private Rigidbody2D _rigid;
+    Animator _animator;
 
     [SerializeField] private Transform _rayPos;
 
@@ -21,12 +23,23 @@ public class PlayerMove : MonoBehaviour
     private void Awake()
     {
         _rigid = GetComponent<Rigidbody2D>();
+        _animator = transform.GetChild(0).GetComponent<Animator>();
+        Debug.Log(_animator);
     }
 
     private void Update()
     {
         Move();
+        Attack();
         StartCoroutine(Jump());
+    }
+
+    private void Attack()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+
+        }
     }
 
     private void Move()
@@ -37,7 +50,7 @@ public class PlayerMove : MonoBehaviour
             transform.localScale = new Vector3(1, 1, 1);
         }
 
-        if(h < 0)
+        if (h < 0)
         {
             transform.localScale = new Vector3(-1, 1, 1);
         }
