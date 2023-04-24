@@ -32,13 +32,14 @@ public class PlayerMove : MonoBehaviour
     private void Move()
     {
         float h = Input.GetAxis("Horizontal");
-        if (h < 0)
-        {
-            transform.localScale = new Vector3(-1, 1, 1);
-        }
-        else
+        if (h > 0)
         {
             transform.localScale = new Vector3(1, 1, 1);
+        }
+
+        if(h < 0)
+        {
+            transform.localScale = new Vector3(-1, 1, 1);
         }
         transform.position += new Vector3(h, 0) * Time.deltaTime * _speed;
     }
