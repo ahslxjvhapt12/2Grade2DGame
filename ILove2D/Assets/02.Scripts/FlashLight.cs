@@ -25,8 +25,11 @@ public class FlashLight : MonoBehaviour
     [SerializeField] float p2;
     [SerializeField] float p3;
 
+    bool pause = false;
+
     private void Update()
     {
+        if (pause) return;
         t1 += Time.deltaTime * speed1;
         t2 += Time.deltaTime * speed2;
         t3 += Time.deltaTime * speed3;
@@ -38,6 +41,23 @@ public class FlashLight : MonoBehaviour
         float sum = ((f1 + f2 + f3) / (p1 + p2 + p3)) * 0.5f + 0.5f;
         _light.intensity = sum;
         t += Time.deltaTime;
+        _light.color = new Color(f1, f2, f3, 1);
+
+        if (t > 9) t = -9;
+
         bomb.transform.position = new Vector2(t, sum * 3);
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.tag == "PlayerHitCol")
+        {
+            Debug.Log(collision.transform.name);
+            if (Vector2.Dot(collision.transform.position, transform.up) > 0)
+            {
+                Debug.Log("À§");
+                pause = !pause;
+            }
+        }
     }
 }
