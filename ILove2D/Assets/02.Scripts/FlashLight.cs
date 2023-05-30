@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 
@@ -24,40 +21,23 @@ public class FlashLight : MonoBehaviour
     [SerializeField] float p1;
     [SerializeField] float p2;
     [SerializeField] float p3;
-
-    bool pause = false;
-
     private void Update()
-    {
-        if (pause) return;
-        t1 += Time.deltaTime * speed1;
-        t2 += Time.deltaTime * speed2;
-        t3 += Time.deltaTime * speed3;
+    { 
+        t1 += Time.deltaTime * speed1; // »ï°¢ÇÔ¼ö 1ÀÇ ÁÖ±â
+        t2 += Time.deltaTime * speed2; // »ï°¢ÇÔ¼ö 2ÀÇ ÁÖ±â
+        t3 += Time.deltaTime * speed3; // »ï°¢ÇÔ¼ö 3ÀÇ ÁÖ±â
 
-        float f1 = Mathf.Cos(t1) * p1;
-        float f2 = Mathf.Cos(t2) * p2;
-        float f3 = Mathf.Cos(t3) * p3;
+        float f1 = Mathf.Cos(t1) * p1; // »ï°¢ÇÔ¼ö 1ÀÇ Æø
+        float f2 = Mathf.Cos(t2) * p2; // »ï°¢ÇÔ¼ö 2ÀÇ Æø
+        float f3 = Mathf.Cos(t3) * p3; // »ï°¢ÇÔ¼ö 3ÀÇ Æø
+        // »ï°¢ÇÔ¼ö¸¦ ´õÇÏ°í Á¤±ÔÈ­ÇÑ °ª = sum
+        float sum = ((f1 + f2 + f3) / (p1 + p2 + p3)) * 0.5f + 0.5f; 
+        _light.intensity = sum; // ºûÀÇ ¹à±â¸¦ sum À¸·Î
+        _light.color = new Color(f1, f2, f3, 1); // ºûÀÇ »öÀ» °¢ »ï°¢ÇÔ¼öÀÇ °á°ú°ªÀ¸·Î
 
-        float sum = ((f1 + f2 + f3) / (p1 + p2 + p3)) * 0.5f + 0.5f;
-        _light.intensity = sum;
+        Debug.Log(f1);
         t += Time.deltaTime;
-        _light.color = new Color(f1, f2, f3, 1);
-
         if (t > 9) t = -9;
-
         bomb.transform.position = new Vector2(t, sum * 3);
-    }
-
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.tag == "PlayerHitCol")
-        {
-            Debug.Log(collision.transform.name);
-            if (Vector2.Dot(collision.transform.position, transform.up) > 0)
-            {
-                Debug.Log("À§");
-                pause = !pause;
-            }
-        }
     }
 }
